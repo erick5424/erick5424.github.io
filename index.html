@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FutbolFanático - Tu Portal de Fútbol</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e5799;
+            --secondary-color: #2989d8;
+            --accent-color: #7db9e8;
+            --text-color: #333;
+            --background-color: #f4f4f4;
+            --success-color: #4CAF50;
+            --error-color: #f44336;
+            --highlight-color: #ffd700;
+        }
+        
+        body, html {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-family: 'Montserrat', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        nav {
+            background-color: var(--accent-color);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        nav ul li {
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        nav ul li a:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+        }
+        
+        .auth-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            max-width: 400px;
+            margin: 40px auto;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 30px rgba(0,0,0,0.2);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        input {
+            margin: 10px 0;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 5px rgba(41, 137, 216, 0.5);
+        }
+        
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .message {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .error {
+            background-color: var(--error-color);
+            color: white;
+        }
+        
+        #football {
+            display: none;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 30px rgba(0,0,0,0.2);
+        }
+        
+        .news-item, .match-item {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .news-item:hover, .match-item:hover {
+            background-color: #f9f9f9;
+            transform: translateX(5px);
+        }
+        
+        .news-item:last-child, .match-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-item h3, .match-item h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+        }
+        
+        .player-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .player-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .player-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-right: 30px;
+            border: 3px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+        
+        .player-item:hover .player-image {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .player-info {
+            flex-grow: 1;
+        }
+        
+        .player-info h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--accent-color);
+            border-radius: 8px;
+            color: white;
+            flex-basis: calc(25% - 20px);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background-color: var(--secondary-color);
+        }
+        
+        #liveFeed {
+            height: 300px;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+        
+        #liveFeed p {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        #liveFeed p:hover {
+            transform: translateX(5px);
+            background-color: var(--highlight-color);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .legend-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .legend-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-right: 30px;
+            border: 3px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+        
+        .legend-item:hover .legend-image {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .legend-info {
+            flex-grow: 1;
+        }
+        
+        .legend-info h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        .legend-story {
+            margin-top: 10px;
+            font-style: italic;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 24px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: var(--highlight-color);
+            transform: translateY(-3px);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 10px 0;
+            }
+            
+            .player-item, .legend-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .player-image, .legend-image {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .stat-item {
+                flex-basis: calc(50% - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-futbol"></i> FutbolFanático</h1>
+    </header>
+    
+    <div class="container">
+        <div id="auth" class="auth-container">
+            <div id="login">
+                <h2><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</h2>
+                <form id="loginForm">
+                    <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+                    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                    <button type="submit">Iniciar Sesión</button>
+                </form>
+                <p>¿No tienes una cuenta? <a href="#" id="showRegister">Regístrate</a></p>
+            </div>
+            
+            <div id="register" style="display: none;">
+                <h2><i class="fas fa-user-plus"></i> Registro</h2>
+                <form id="registerForm">
+                    <input type="text" id="registerName" placeholder="Nombre" required>
+                    <input type="email" id="registerEmail" placeholder="Correo electrónico" required>
+                    <input type="password" id="registerPassword" placeholder="Contraseña" required>
+                    <button type="submit">Registrarse</button>
+                </form>
+                <p>¿Ya tienes una cuenta? <a href="#" id="showLogin">Inicia sesión</a></p>
+            </div>
+            
+            <div id="message" class="message"></div>
+        </div>
+
+        <div id="football" style="display: none;">
+            <nav>
+                <ul>
+                    <li><a href="#news"><i class="fas fa-newspaper"></i> Noticias</a></li>
+                    <li><a href="#matches"><i class="fas fa-trophy"></i> Partidos</a></li>
+                    <li><a href="#players"><i class="fas fa-users"></i> Jugadores Destacados</a></li>
+                    <li><a href="#stats"><i class="fas fa-chart-bar"></i> Estadísticas</a></li>
+                    <li><a href="#live"><i class="fas fa-broadcast-tower"></i> En Vivo</a></li>
+                    <li><a href="#legends"><i class="fas fa-star"></i> Leyendas</a></li>
+                    <li><a href="#" id="logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                </ul>
+            </nav>
+            
+            <section id="news" class="section">
+                <h2><i class="fas fa-newspaper"></i> Últimas Noticias</h2>
+                <div id="footballNews"></div>
+            </section>
+            
+            <section id="matches" class="section">
+                <h2><i class="fas fa-trophy"></i> Próximos Partidos</h2>
+                <div id="upcomingMatches"></div>
+            </section>
+            
+            <section id="players" class="section">
+                <h2><i class="fas fa-users"></i> Jugadores Destacados</h2>
+                <div id="topPlayers"></div>
+            </section>
+            
+            <section id="stats" class="section">
+                <h2><i class="fas fa-chart-bar"></i> Estadísticas de la Temporada</h2>
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <h3>Goles Totales</h3>
+                        <p id="totalGoals">0</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Asistencias</h3>
+                        <p id="totalAssists">0</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Tarjetas Amarillas</h3>
+                        <p id="yellowCards">0</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Tarjetas Rojas</h3>
+                        <p id="redCards">0</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Partidos Jugados</h3>
+                        <p id="matchesPlayed">0</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Promedio de Goles</h3>
+                        <p id="averageGoals">0</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Tiros al Arco</h3>
+                        <p id="shotsOnTarget">0</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Atajadas</h3>
+                        <p id="saves">0</p>
+                    </div>
+                </div>
+            </section>
+            <section id="live" class="section">
+                <h2><i class="fas fa-broadcast-tower"></i> Transmisión en Vivo</h2>
+                <div id="liveFeed"></div>
+            </section>
+            <section id="legends" class="section">
+                <h2><i class="fas fa-star"></i> Leyendas del Fútbol</h2>
+                <div id="footballLegends"></div>
+            </section>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 FutbolFanático. Todos los derechos reservados.</p>
+        <p>Síguenos en nuestras redes sociales:</p>
+        <div class="social-icons">
+            <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        // Configuración de la API de Google Sheets
+        const API_URL = 'https://api.sheetbest.com/sheets/6d20c073-bd4d-41b8-896e-99837edb91a1';
+        const API_KEY = '6O55p-UUwEc!lmZ!7cx1%nOEvvB%z06dBfyhhPvU5Mfv!l4ARxF0fkIBt@1d@N!f';
+    
+        // Elementos del DOM
+        const authDiv = document.getElementById('auth');
+        const loginDiv = document.getElementById('login');
+        const registerDiv = document.getElementById('register');
+        const footballDiv = document.getElementById('football');
+        const messageDiv = document.getElementById('message');
+        const footballNews = document.getElementById('footballNews');
+        const upcomingMatches = document.getElementById('upcomingMatches');
+        const topPlayers = document.getElementById('topPlayers');
+        const liveFeed = document.getElementById('liveFeed');
+        const footballLegends = document.getElementById('footballLegends');
+    
+        // Funciones para interactuar con Google Sheets
+        async function registerUser(userData) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        name: userData.name,
+                        email: userData.email,
+                        password: userData.password,
+                        dateRegistered: new Date().toISOString()
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Error en el registro');
+                return true;
+            } catch (error) {
+                console.error('Error al registrar:', error);
+                return false;
+            }
+        }
+    
+        async function checkUserExists(email) {
+            try {
+                const response = await fetch(`${API_URL}?filter={"email":"${email}"}`, {
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`
+                    }
+                });
+                const data = await response.json();
+                return data.length > 0;
+            } catch (error) {
+                console.error('Error al verificar usuario:', error);
+                return false;
+            }
+        }
+    
+        async function loginUser(email, password) {
+            try {
+                const response = await fetch(`${API_URL}?filter={"email":"${email}"}`, {
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`
+                    }
+                });
+                const users = await response.json();
+                
+                if (users.length === 0) return null;
+                const user = users[0];
+                
+                if (user.password === password) {
+                    return user;
+                }
+                return null;
+            } catch (error) {
+                console.error('Error al iniciar sesión:', error);
+                return null;
+            }
+        }
+    
+        // Mostrar/ocultar formularios
+        document.getElementById('showRegister').addEventListener('click', (e) => {
+            e.preventDefault();
+            loginDiv.style.display = 'none';
+            registerDiv.style.display = 'block';
+        });
+        
+        document.getElementById('showLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            registerDiv.style.display = 'none';
+            loginDiv.style.display = 'block';
+        });
+    
+        // Manejar registro
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            
+            const userExists = await checkUserExists(email);
+            
+            if (userExists) {
+                showMessage('Este correo electrónico ya está registrado.', 'error');
+                return;
+            }
+            
+            const success = await registerUser({ name, email, password });
+            
+            if (success) {
+                showMessage('Registro exitoso. Por favor, inicia sesión.', 'success');
+                registerDiv.style.display = 'none';
+                loginDiv.style.display = 'block';
+            } else {
+                showMessage('Error al registrar. Por favor, intenta de nuevo.', 'error');
+            }
+        });
+    
+        // Manejar inicio de sesión
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const user = await loginUser(email, password);
+            
+            if (user) {
+                showMessage('Inicio de sesión exitoso.', 'success');
+                sessionStorage.setItem('currentUser', JSON.stringify(user));
+                authDiv.style.display = 'none';
+                footballDiv.style.display = 'block';
+                loadFootballContent();
+                startLiveFeed();
+                updateStats();
+            } else {
+                showMessage('Credenciales incorrectas.', 'error');
+            }
+        });
+    
+        // Manejar cierre de sesión
+        document.getElementById('logout').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.removeItem('currentUser');
+            footballDiv.style.display = 'none';
+            authDiv.style.display = 'block';
+            loginDiv.style.display = 'block';
+            registerDiv.style.display = 'none';
+            showMessage('Has cerrado sesión exitosamente.', 'success');
+        });
+    
+        // Función para mostrar mensajes
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            setTimeout(() => {
+                messageDiv.textContent = '';
+                messageDiv.className = 'message';
+            }, 3000);
+        }
+    
+        // El resto de las funciones se mantienen igual
+        function loadFootballContent() {
+            loadFootballNews();
+            loadUpcomingMatches();
+            loadTopPlayers();
+            loadFootballLegends();
+        }
+    
+    // Cargar noticias de fútbol
+    function loadFootballNews() {
+        const news = [
+            { title: "El Clásico: Real Madrid vs Barcelona este fin de semana", content: "El partido más esperado de la temporada se jugará este sábado en el Santiago Bernabéu. Ambos equipos llegan en plena forma y se espera un duelo épico que podría decidir el título de La Liga." },
+            { title: "Mbappé lidera al Real Madrid en la Champions League", content: "El delantero francés ha sido fundamental en el avance del Real Madrid en la Champions League, anotando goles cruciales en cada partido." },
+            { title: "La Premier League anuncia nuevas reglas para la próxima temporada", content: "Se implementarán cambios en el VAR y en las sustituciones, buscando mejorar la dinámica del juego. Entre las novedades, se incluye un tiempo límite para la revisión del VAR y la posibilidad de realizar una cuarta sustitución en caso de prórroga." },
+            { title: "Nuevo entrenador para la selección brasileña", content: "La CBF ha anunciado la contratación de un nuevo director técnico para liderar el proyecto de cara al Mundial 2026. El experimentado entrenador tiene la misión de devolver a Brasil a lo más alto del fútbol mundial." },
+            { title: "Joven promesa del fútbol africano ficha por un grande de Europa", content: "Un talentoso jugador de 18 años, considerado la nueva joya del fútbol africano, ha sido fichado por uno de los clubes más importantes de Europa. Se espera que su llegada revolucione el ataque del equipo." }
+        ];
+    
+        footballNews.innerHTML = news.map(item => `
+            <div class="news-item">
+                <h3>${item.title}</h3>
+                <p>${item.content}</p>
+            </div>
+        `).join('');
+    }
+    
+    // Cargar próximos partidos
+    function loadUpcomingMatches() {
+        const matches = [
+            { teams: "Manchester City vs Liverpool", date: "15 de octubre, 2024", time: "15:00 GMT", league: "Premier League" },
+            { teams: "PSG vs Marseille", date: "22 de octubre, 2024", time: "20:00 CET", league: "Ligue 1" },
+            { teams: "Bayern Munich vs Borussia Dortmund", date: "29 de octubre, 2024", time: "18:30 CET", league: "Bundesliga" },
+            { teams: "Juventus vs Inter de Milán", date: "5 de noviembre, 2024", time: "20:45 CET", league: "Serie A" },
+            { teams: "Real Madrid vs Atlético Madrid", date: "12 de noviembre, 2024", time: "21:00 CET", league: "La Liga" }
+        ];
+    
+        upcomingMatches.innerHTML = matches.map(match => `
+            <div class="match-item">
+                <h3>${match.teams}</h3>
+                <p><i class="fas fa-calendar-alt"></i> Fecha: ${match.date}</p>
+                <p><i class="fas fa-clock"></i> Hora: ${match.time}</p>
+                <p><i class="fas fa-trophy"></i> Liga: ${match.league}</p>
+            </div>
+        `).join('');
+    }
+    
+    // Cargar jugadores destacados
+    function loadTopPlayers() {
+        const players = [
+            { name: "Lionel Messi", team: "Inter Miami", position: "Delantero", image: "https://images.mlssoccer.com/image/private/t_editorial_landscape_8_desktop_mobile/mls-mia-prd/xyfcjysnblxkkprtwect.png" },
+            { name: "Cristiano Ronaldo", team: "Al Nassr", position: "Delantero", image: "https://e00-marca.uecdn.es/assets/multimedia/imagenes/2022/12/22/16716799531322.jpg" },
+            { name: "Kevin De Bruyne", team: "Manchester City", position: "Centrocampista", image: "https://static0.givemesportimages.com/wordpress/wp-content/uploads/2024/03/man-city-money.jpg" },
+            { name: "Kylian Mbappé", team: "Real Madrid", position: "Delantero", image: "https://radionicaragua.com.ni/wp-content/uploads/radio-nicaragua/IMG_20240219_080847.jpg" },
+            { name: "Erling Haaland", team: "Manchester City", position: "Delantero", image: "https://storage.googleapis.com/www-factornueve-com/2022/05/441e8cf5-%C2%BFerling-haaland-sera%CC%81-la-bomba-de-este-equipo-ingle%CC%81s-e1652109675462.jpeg" }
+        ];
+    
+        topPlayers.innerHTML = players.map(player => `
+            <div class="player-item">
+                <img src="${player.image}" alt="${player.name}" class="player-image">
+                <div class="player-info">
+                    <h3>${player.name}</h3>
+                    <p><i class="fas fa-futbol"></i> Equipo: ${player.team}</p>
+                    <p><i class="fas fa-running"></i> Posición: ${player.position}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Cargar leyendas del fútbol
+    function loadFootballLegends() {
+        const legends = [
+            { 
+                name: "Pelé", 
+                country: "Brasil", 
+                image: "https://file.mundodeportivo.com/ext2/info/imagen/futbol/pele/pele-ver.jpg",
+                story: "Considerado por muchos como el mejor jugador de todos los tiempos, Pelé ganó tres Copas del Mundo con Brasil y marcó más de 1000 goles en su carrera."
+            },
+            { 
+                name: "Diego Maradona", 
+                country: "Argentina", 
+                image: "https://cdn.diariojornada.com.ar/imagenes/2022/6/22/327806_1376.jpg",
+                story: "Maradona llevó a Argentina a la gloria en el Mundial de 1986 con actuaciones legendarias, incluyendo el famoso gol de la 'Mano de Dios' y el 'Gol del Siglo'."
+            },
+            { 
+                name: "Johan Cruyff", 
+                country: "Países Bajos", 
+                image: "https://i.pinimg.com/564x/a3/a9/27/a3a927318e60ad6698f68c7c0b444b65.jpg",
+                story: "Cruyff revolucionó el fútbol con su estilo de juego y su filosofía táctica. Fue la figura central del 'Fútbol Total' holandés de los años 70."
+            }
+        ];
+    
+        footballLegends.innerHTML = legends.map(legend => `
+            <div class="legend-item">
+                <img src="${legend.image}" alt="${legend.name}" class="legend-image">
+                <div class="legend-info">
+                    <h3>${legend.name}</h3>
+                    <p><i class="fas fa-flag"></i> País: ${legend.country}</p>
+                    <p class="legend-story">${legend.story}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Simular transmisión en vivo
+    function startLiveFeed() {
+        const events = [
+            "¡Gol de Manchester United! Marcus Rashford anota al minuto 23.",
+            "Tarjeta amarilla para Sergio Ramos del PSG.",
+            "Cambio en el Bayern Munich: entra Müller, sale Musiala.",
+            "Penal a favor del Liverpool. Salah se prepara para cobrar.",
+            "¡Atajada espectacular de Ter Stegen! Barcelona se salva.",
+            "Se agregan 4 minutos de tiempo adicional en el partido Roma vs Lazio.",
+            "¡Golazo de chilena de Benzema! Real Madrid toma la ventaja.",
+            "Lesión preocupante para Neymar, los médicos entran al campo.",
+            "VAR en revisión por una posible mano en el área.",
+            "¡Hat-trick para Harry Kane! Tottenham golea 3-0."
+        ];
+    
+        setInterval(() => {
+    const event = events[Math.floor(Math.random() * events.length)];
+    const eventElement = document.createElement('p');
+    eventElement.textContent = event;
+    liveFeed.prepend(eventElement);
+    
+    if (liveFeed.children.length > 5) {
+        liveFeed.removeChild(liveFeed.lastChild);
+    }
+}, 5000);
+}
+
+// Actualizar estadísticas
+function updateStats() {
+const stats = {
+    totalGoals: Math.floor(Math.random() * 1000) + 500,
+    totalAssists: Math.floor(Math.random() * 800) + 300,
+    yellowCards: Math.floor(Math.random() * 500) + 100,
+    redCards: Math.floor(Math.random() * 50) + 10,
+    matchesPlayed: Math.floor(Math.random() * 300) + 100,
+    shotsOnTarget: Math.floor(Math.random() * 2000) + 1000,
+    saves: Math.floor(Math.random() * 500) + 200
+};
+
+document.getElementById('totalGoals').textContent = stats.totalGoals;
+document.getElementById('totalAssists').textContent = stats.totalAssists;
+document.getElementById('yellowCards').textContent = stats.yellowCards;
+document.getElementById('redCards').textContent = stats.redCards;
+document.getElementById('matchesPlayed').textContent = stats.matchesPlayed;
+document.getElementById('averageGoals').textContent = (stats.totalGoals / stats.matchesPlayed).toFixed(2);
+document.getElementById('shotsOnTarget').textContent = stats.shotsOnTarget;
+document.getElementById('saves').textContent = stats.saves;
+
+setInterval(() => {
+    stats.totalGoals += Math.floor(Math.random() * 3);
+    stats.totalAssists += Math.floor(Math.random() * 2);
+    stats.yellowCards += Math.floor(Math.random() * 2);
+    stats.redCards += Math.floor(Math.random() * 2) === 0 ? 1 : 0;
+    stats.matchesPlayed += 1;
+    stats.shotsOnTarget += Math.floor(Math.random() * 5);
+    stats.saves += Math.floor(Math.random() * 3);
+
+    document.getElementById('totalGoals').textContent = stats.totalGoals;
+    document.getElementById('totalAssists').textContent = stats.totalAssists;
+    document.getElementById('yellowCards').textContent = stats.yellowCards;
+    document.getElementById('redCards').textContent = stats.redCards;
+    document.getElementById('matchesPlayed').textContent = stats.matchesPlayed;
+    document.getElementById('averageGoals').textContent = (stats.totalGoals / stats.matchesPlayed).toFixed(2);
+    document.getElementById('shotsOnTarget').textContent = stats.shotsOnTarget;
+    document.getElementById('saves').textContent = stats.saves;
+}, 10000);
+}
+
+</script>
+</body>
+</html>
